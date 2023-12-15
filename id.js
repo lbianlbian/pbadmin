@@ -33,7 +33,7 @@ async function showAccs(id1, id2){
     var h1 = document.createElement("h1");
     var link = document.createElement("a");
     link.innerHTML = accs[x].pubkey.toBase58();
-    link.setAttribute("href", "pbadmin/accdetail.html?" + accs[x].pubkey.toBase58());
+    link.setAttribute("href", "accdetail.html?" + accs[x].pubkey.toBase58());
     link.setAttribute("target", "_blank");
     h1.appendChild(link);
     display.appendChild(h1);
