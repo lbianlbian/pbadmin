@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title> Abort a market from being graded </title>
+    <link rel = "stylesheet" href = "style.css">
+  </head>
+  <body>
+    <br>
+    <br>
+    <h1> Enter password here: </h1>
+    <input type = "text" id = "pwd">
+    <br>
+    <br>
+    <br>
+    <button onclick = "abort()"> Click here to abort grading </button>
+    <h1 id = "conf"> Confirmation message will appear here </h1>
+    <script>
+      function abort(){
+        //get query parameters
+        var rawURL = window.location.href;
+        var params = rawURL.split("?")[1];
+        var paramList = params.split("&");
+        var pinId, pbid;
+        for(var x = 0; x < paramList.length; x++){
+          var keyval = paramList[x].split("=");
+          var key = keyval[0];
+          var val = keyval[1];
+          if(key == "pinId"){
+            pinId = val;
+          }
+          else if(key == "pbid"){
+            pbid = val;
+          }
+        }
+        var pwd = document.getElementById("pwd").value;
+        var url = "https://ermnemp8v2.execute-api.ap-northeast-1.amazonaws.com/abort?pinId=" + pinId + "&pbid=" + pbid + "&pwd=" + pwd;
+        var abortCall = new XMLHttpRequest();
+        abortCall.open("GET", url, false);
+        abortCall.send();
+        document.getElementById("conf").innerHTML = abortCall.response;
+      }
+    </script>
+  </body>
+</html>

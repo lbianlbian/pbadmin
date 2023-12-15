@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title> Maker Order </title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <script src = "script.js"> </script>
+    <script src = "maker.js"> </script>
+    <button onclick = "phantom_connect()"> Connect phantom wallet </button>
+    <h1 id = "display"> connected wallet addr </h1>
+    <p> Stake </p>
+    <input type = "text" id = "stake">
+    <p> Odds </p>
+    <input type = "text" id = "odds">
+    <p> ID1 </p>
+    <input type = "text" id = "id1">
+    <p> ID2 </p>
+    <input type = "text" id = "id2">
+    <p> Side: 0 or 1 </p>
+    <input type = "text" id = "side">
+    <button onclick = "maker()"> Place Maker Order </button>
+    <h1 id = "sig"> Signature will appear here </h1>
+    <h1 id = "addr"> Address of new bet acc appears here </h1>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  color: green;
+}
+
+#navbar{
+  position:fixed;
+  float:right;
+}
+ h1{
+   width: 80%;
+ }
+input {
+  width: 80%;
+  height: 20%;
+  font-size: 300%;
+}
+button{
+  width:80%;
+  height: 20%;
+  font-size: 300%;
+}
+

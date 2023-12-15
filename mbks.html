@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title> Clear all open mollybet orders </title>
+    <link rel = "stylesheet" href = "style.css">
+  </head>
+  <body>
+    <br>
+    <br>
+    <h1> Enter password here: </h1>
+    <input type = "text" id = "pwd">
+    <br>
+    <br>
+    <br>
+    <button onclick = "abort()"> Click here to clear all mb orders </button>
+    <h1 id = "conf"> Confirmation message will appear here </h1>
+    <script>
+      function abort(){
+        //get query parameters
+        
+        var pwd = document.getElementById("pwd").value;
+        var url = "https://5m99ukd6r2.execute-api.ap-northeast-1.amazonaws.com//mbks?pwd=" + pwd;
+        var abortCall = new XMLHttpRequest();
+        abortCall.open("GET", url, false);
+        abortCall.send();
+        document.getElementById("conf").innerHTML = abortCall.response;
+      }
+    </script>
+  </body>
+</html>
