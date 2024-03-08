@@ -10,7 +10,7 @@ var mint = new solanaWeb3.PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1
 var globalProvider;
 var globalKey;
 
-var all0s = base58.encode([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+var all0s = "need to fix this ";
 
 function phantom_connect() {
   var provider = () => {
