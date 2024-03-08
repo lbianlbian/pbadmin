@@ -24,10 +24,12 @@
 		      data: new Uint8Array([]) 
 	      });
         var transaction = new solanaWeb3.Transaction();
+	      let fees = solanaWeb3.ComputeBudgetProgram.setComputeUnitPrice({microLamports: 100});
         transaction.add(matchBetInstr);
+	      transaction.add(fees);
         transaction.feePayer = globalKey;
-        var blockhashObj = await connection.getRecentBlockhash();
-      	transaction.recentBlockhash = await blockhashObj.blockhash; 
+        var blockhashObj = await connection.getLatestBlockhash();
+      	transaction.recentBlockhash = blockhashObj.blockhash;
         var signed = await globalProvider.signTransaction(transaction);
         var signature = await connection.sendRawTransaction(signed.serialize());
 	      await connection.confirmTransaction(signature);
