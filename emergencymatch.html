@@ -24,9 +24,9 @@
 		      data: new Uint8Array([]) 
 	      });
         var transaction = new solanaWeb3.Transaction();
-	      let fees = solanaWeb3.ComputeBudgetProgram.setComputeUnitPrice({microLamports: 100});
+	      //let fees = solanaWeb3.ComputeBudgetProgram.setComputeUnitPrice({microLamports: 100});
         transaction.add(matchBetInstr);
-	      transaction.add(fees);
+	      //transaction.add(fees);
         transaction.feePayer = globalKey;
         var blockhashObj = await connection.getLatestBlockhash();
       	transaction.recentBlockhash = blockhashObj.blockhash;
