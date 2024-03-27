@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title> Rent exempt calculator for Solana blockchain </title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <script>
+      var connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("testnet"), "confirmed");
+      async function calculate(){
+        
+        var bytes = document.getElementById("bytes").value;
+        var display = document.getElementById("display");
+         var rentExemptVal = await connection.getMinimumBalanceForRentExemption(parseInt(bytes));
+        display.innerHTML = rentExemptVal / 1000000000;
+      }
+    </script>
+    <input type = "text" id = "bytes">
+    <button onclick = "calculate()"> Calculate rent exempt value for this many bytes </button>
+        <h1 id = "display"> </h1>
+  </body>
+</html>
