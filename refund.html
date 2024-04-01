@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title> Admin refunding </title>
+  </head>
+  <body>
+    <script src = "script.js"> </script>
+    <button onclick = "phantom_connect()"> Connect to phantom wallet </button>
+    <h1 id = "display"> connected wallet addr</h1>
+    <h1> How many accounts to refund? </h1>
+    <input type = "number" name = "numAccs" id = "numAccs" onChange = "setInputs()"/>
+    <div id = "inputs"></div>
+    <button onclick = "refund()"> Refund these bets </button>
+    <h1 id = "sig"> tx Signature appears here</h1>
+    <script>
+      function setInputs(){
+        let numAccs = document.getElementById("numAccs").value;
+        for(let i = 0; i < numAccs; i++){
+          let newInput = document.createElement("input");
+          newInput.setAttribute("type", "text")
+          newInput.id = "acc" + (i + 1);
+          document.getElementById("inputs").appendChild(newInput);
+        }
+      }
+      async function refund(){
+        let output = [];
+        
+      }
+    </script>
+  </body>
+</html>
