@@ -6,13 +6,15 @@
     <script src = "script.js"> </script>
     <button onclick = "phantom_connect()"> Connect to phantom wallet </button>
     <h1 id = "display"> connected wallet addr</h1>
-    <h1> How many accounts to refund? </h1>
+    <h1> How many accounts to refund? remember to hit enter after typing </h1>
     <input type = "number" name = "numAccs" id = "numAccs" onChange = "setInputs()"/>
+    <h1> Enter unmatched bet acc + comma + bettor </h1>
     <div id = "inputs"></div>
     <button onclick = "refund()"> Refund these bets </button>
     <h1 id = "sig"> tx Signature appears here</h1>
     <script>
       function setInputs(){
+        document.getElementById("inputs).innerHTML = "";
         let numAccs = document.getElementById("numAccs").value;
         for(let i = 0; i < numAccs; i++){
           let newInput = document.createElement("input");
@@ -21,9 +23,62 @@
           document.getElementById("inputs").appendChild(newInput);
         }
       }
+      
       async function refund(){
         let output = [];
-        
+        let accEls = document.getElementById("inputs").children;
+        for(let accEl of accEls){
+          let [bet, bettor] = accEl.value.split(",");
+          let currObj = {
+            bet: new solanaWeb3.PublicKey(bet),
+            bettor: new solanaWeb3.PublicKey(bettor)
+          };
+          output.append(currObj);
+        }
+        document.getElementById("sig").innerHTML = await refundHelper(output);
+      }
+      
+      var pdaMeta = {pubkey: new solanaWeb3.PublicKey("CSxoXkPJTw2WsnNDHZ3mBnQ12TsREHZ7Xv66hbNtpPX9"), isSigner: false, isWritable: true};
+      async function refundHelper(infoList){
+      	var bumpKeyArr = await solanaWeb3.PublicKey.findProgramAddress([ new Uint8Array([98, 97, 110, 107])], programID);
+        var bumpKey = bumpKeyArr[1];
+      	var i = 0;
+        let outputSigs = "";
+      	while(i < infoList.length){
+      		
+      		const transaction = new solanaWeb3.Transaction();
+      		transaction.feePayer = globalKey;
+      		var blockhashObj = await connection.getLatestBlockhash();
+      		transaction.recentBlockhash = blockhashObj.blockhash; 
+      		while( transaction.serialize({requireAllSignatures: false, verifySignatures: false}).length < 1000 && i < infoList.length){
+      			console.log("adding an instr")
+      			var callForATA = await connection.getTokenAccountsByOwner(infoList[i].bettor, {"mint": mintPubkey});
+      			var bettorAssocTokAddr = callForATA.value[0].pubkey;
+      			var instruction  = new solanaWeb3.TransactionInstruction({
+      				keys: [
+      					{pubkey: infoList[i].bet, isSigner: false, isWritable: true},
+      					{pubkey: tokenProgram, isSigner: false, isWritable: false},
+                {pubkey: bankAssocTok, isSigner: false, isWritable: true}, 
+      					{pubkey: mint, isSigner: false, isWritable: true},
+      					{pubkey: bettorAssocTokAddr, isSigner: false, isWritable: true},
+      					{pubkey: infoList[i].bettor, isSigner: false, isWritable: true},
+      					pdaMeta,
+      					{pubkey: globalKey, isSigner: true, isWritable: true}
+      				],
+      				programId: programID,
+      				data: new Uint8Array([bumpKey]),
+      			});
+      			// console.log("admin pubkey: " + adminKey.toBase58());
+      			transaction.add(instruction);
+            
+      			i += 1;
+      		}
+          var signed = await globalProvider.signTransaction(transaction);
+          var signature = await connection.sendRawTransaction(signed.serialize());
+  	      await connection.confirmTransaction(signature);
+          outputSigs += signature;
+      	}	
+        return outputSigs;
       }
     </script>
   </body>
