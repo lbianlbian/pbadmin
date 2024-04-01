@@ -53,7 +53,7 @@
       		transaction.recentBlockhash = blockhashObj.blockhash; 
       		while( transaction.serialize({requireAllSignatures: false, verifySignatures: false}).length < 1000 && i < infoList.length){
       			console.log("adding an instr")
-      			var callForATA = await connection.getTokenAccountsByOwner(infoList[i].bettor, {"mint": mintPubkey});
+      			var callForATA = await connection.getTokenAccountsByOwner(infoList[i].bettor, {"mint": mint});
       			var bettorAssocTokAddr = callForATA.value[0].pubkey;
       			var instruction  = new solanaWeb3.TransactionInstruction({
       				keys: [
