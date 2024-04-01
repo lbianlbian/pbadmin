@@ -34,7 +34,7 @@
             bet: new solanaWeb3.PublicKey(bet),
             bettor: new solanaWeb3.PublicKey(bettor)
           };
-          output.append(currObj);
+          output.push(currObj);
         }
         document.getElementById("sig").innerHTML = await refundHelper(output);
       }
