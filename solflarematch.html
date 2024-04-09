@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title> Emergency Match </title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+	
+    <script src = "script.js"> </script>
+    <script>
+	    globalKey = "";
+	    globalProvider = window.solflare;
+	function solflare(){
+		window.solflare.connect();
+		document.getElementById("display").innerHTML = window.solflare.publicKey.toBase58();
+		globalKey = window.solflare.publicKey;
+	}
+      async function emergencyMatch(){
+        var betAcc = new solanaWeb3.PublicKey(document.getElementById("addr").value);
+        var callForATA = await connection.getTokenAccountsByOwner(globalKey, { mint: mint });
+        var bettorAssocTokAddr = callForATA.value[0].pubkey;
+        var matchBetInstr = new solanaWeb3.TransactionInstruction({
+		      keys: [
+            {pubkey: betAcc, isSigner: false, isWritable: true}, 
+            {pubkey: tokenProgram, isSigner: false, isWritable: false},
+            {pubkey: bettorAssocTokAddr, isSigner: false, isWritable: true},
+            {pubkey: mint, isSigner: false, isWritable: true},
+            {pubkey: bankAssocTok, isSigner: false, isWritable: true}, 
+            {pubkey: globalKey, isSigner: true, isWritable: true},
+          ], 
+		      programId: programID, 
+		      data: new Uint8Array([]) 
+	      });
+        var transaction = new solanaWeb3.Transaction();
+	      //let fees = solanaWeb3.ComputeBudgetProgram.setComputeUnitPrice({microLamports: 100});
+        transaction.add(matchBetInstr);
+	      //transaction.add(fees);
+        transaction.feePayer = globalKey;
+        var blockhashObj = await connection.getLatestBlockhash();
+      	transaction.recentBlockhash = blockhashObj.blockhash;
+        var signed = await globalProvider.signTransaction(transaction);
+        var signature = await connection.sendRawTransaction(signed.serialize());
+	      await connection.confirmTransaction(signature);
+        document.getElementById("sig").innerHTML = signature;
+      }
+    </script>
+    <h1 id = "display"> connected wallet addr</h1>
+    <button onclick = "solflare()"> Connect to solflare wallet </button>
+    <input type = "text" value = "bet account address here" id = "addr">
+    <button onclick = "emergencyMatch()"> Emergency Match </button>
+    <h1 id = "sig"> tx sig appears here</h1>
+  </body>
+</html>
