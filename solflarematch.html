@@ -9,8 +9,8 @@
     <script>
 	    globalKey = "";
 	    globalProvider = window.solflare;
-	function solflare_connect(){
-		window.solflare.connect();
+	async function solflare_connect(){
+		await window.solflare.connect();
 		document.getElementById("display").innerHTML = window.solflare.publicKey.toBase58();
 		globalKey = window.solflare.publicKey;
 	}
